@@ -2,7 +2,9 @@
 from __future__ import absolute_import, unicode_literals
 
 from celery import shared_task
-from demoapp.models import Widget
+from weather.celery import app
+from main.models import Weather
+from datetime import datetime
 
 
 @shared_task
@@ -20,13 +22,17 @@ def xsum(numbers):
     return sum(numbers)
 
 
-@shared_task
-def count_widgets():
-    return Widget.objects.count()
+@app.task
+def prnt(string: str):
+    return string
 
 
-@shared_task
-def rename_widget(widget_id, name):
-    w = Widget.objects.get(id=widget_id)
-    w.name = name
-    w.save()
+@app.task
+def get_weather():
+    print('ok')
+    Weather.objects.create(digit=str(datetime.now())[-1])
+
+@app.task
+def func():
+    with open('file.txt', 'a') as file:
+        file.write('1')

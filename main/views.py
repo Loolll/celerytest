@@ -1,8 +1,8 @@
 from django.shortcuts import render
-
+from main.models import Weather
 
 # Create your views here.
 def index(request):
-    # TODO get weather from request on weather site with parser
-    weather = 0
-    return render(request, 'index.html', {'weather': weather})
+    weathers = [x.digit for x in Weather.objects.all()]
+    print(weathers)
+    return render(request, 'index.html', {'weather': weathers})
